@@ -2,5 +2,5 @@
   "name": "Drift Studio",
   "description": "Visual social content workspace powered by open-weight AI. Turn rough ideas into platform-ready social campaigns, organized content boards, and weekly calendars.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
