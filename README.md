@@ -73,7 +73,7 @@ From a single raw idea, brief, or product update, Drift Studio instantly generat
 | **Motion & Animation** | [Motion](https://motion.dev/) (`motion/react`) |
 | **Icons** | [Lucide React](https://lucide.dev/) |
 | **Confetti & Delight** | [Canvas Confetti](https://www.npmjs.com/package/canvas-confetti) |
-| **AI / ML Integration** | [@google/genai](https://www.npmjs.com/package/@google/genai) & [@huggingface/transformers](https://huggingface.co/docs/transformers.js) |
+| **AI / ML Integration** | [@huggingface/transformers](https://huggingface.co/docs/transformers.js) & SmolLM2 ONNX Q4 WebGPU / WASM |
 | **State & Persistence** | LocalStorage persistence with resilient initial schema seeding |
 
 ---
