@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import { Copy, Check, ArrowRight, Sparkles } from 'lucide-react';
 import { Platform } from '../types';
-import { PLATFORM_CONFIGS, INITIAL_DRAFTS } from '../constants';
+import { PLATFORM_CONFIGS, INITIAL_DRAFTS, INITIAL_CAMPAIGNS } from '../constants';
 import { StorageService } from '../services/storage';
+import { RevealSection } from './RevealSection';
 
 interface ProductInActionSectionProps {
   onOpenStudio: () => void;
 }
 
 export const ProductInActionSection: React.FC<ProductInActionSectionProps> = ({ onOpenStudio }) => {
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>(INITIAL_CAMPAIGNS[0].id);
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>('x');
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
 
-  // Find corresponding draft for demo
-  const activeDraft = INITIAL_DRAFTS.find((d) => d.platform === selectedPlatform) || INITIAL_DRAFTS[0];
-  const config = PLATFORM_CONFIGS[selectedPlatform];
+  const activeCampaign =
+    INITIAL_CAMPAIGNS.find((c) => c.id === selectedCampaignId) || INITIAL_CAMPAIGNS[0];
+
+  const campaignDrafts = INITIAL_DRAFTS.filter((d) => d.campaignId === activeCampaign.id);
+  const activeDraft =
+    campaignDrafts.find((d) => d.platform === selectedPlatform) ||
+    INITIAL_DRAFTS.find((d) => d.platform === selectedPlatform) ||
+    campaignDrafts[0];
+
+  const config = PLATFORM_CONFIGS[activeDraft.platform];
 
   const handleCopy = async (text: string, id: string) => {
     const success = await StorageService.copyToClipboard(text);
@@ -27,137 +36,209 @@ export const ProductInActionSection: React.FC<ProductInActionSectionProps> = ({ 
   const platformsList: Platform[] = ['x', 'linkedin', 'instagram', 'threads', 'youtube_shorts', 'reddit'];
 
   return (
-    <section id="scene-product" className="py-20 sm:py-28 bg-white dark:bg-[#0C0B12] transition-colors border-t border-black/5 dark:border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="scene-product"
+      className="py-20 sm:py-28 bg-white dark:bg-[#0D0B14] transition-colors border-b border-[#19171F]/10 dark:border-white/10"
+    >
+      <RevealSection className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
+        {/* Section Editorial Header */}
         <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
-          <div className="text-xs font-bold tracking-widest text-[#5515E8] uppercase mb-3">
-            01 · Real Transformation
+          <div className="text-xs font-bold tracking-[0.16em] text-[#5515E8] dark:text-[#7886F8] uppercase mb-3">
+            01 · THE PRODUCT IN ACTION
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-[#19171F] dark:text-white leading-[1.1]">
-            One rough thought.
+          <h2 className="font-display text-[clamp(2rem,4.5vw,3.75rem)] font-extrabold tracking-[-0.03em] text-[#19171F] dark:text-white leading-[1.08] text-balance">
+            One rough idea.
             <br />
-            Every social format solved.
+            Adapted for every channel.
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#777481] dark:text-[#9590A3] font-normal leading-relaxed text-balance">
-            Watch how a single developer milestone brief is adapted into platform-native tone, structure, and pacing by the open-weight model.
+          <p className="mt-4 text-base sm:text-lg text-[#777481] dark:text-[#9E9AA8] font-normal leading-relaxed text-balance">
+            Explore how Drift transforms an authentic founder brief into structured, platform-specific drafts with native hooks, pacing, and character budgets.
           </p>
         </div>
 
-        {/* Live Transformation Workspace Container */}
-        <div className="bg-[#F7F6FA] dark:bg-[#14121F] rounded-3xl border border-black/10 dark:border-white/10 p-6 sm:p-10 shadow-xl">
+        {/* Interactive Split Workspace Preview (Single-level elevation with hairline dividers) */}
+        <div className="rounded-[28px] bg-[#F7F6FA] dark:bg-[#151221] border border-[#19171F]/10 dark:border-white/10 overflow-hidden shadow-lg">
           
-          {/* Top Half: The Input Brief Card */}
-          <div className="bg-white dark:bg-[#1C182B] rounded-2xl p-5 sm:p-6 border border-black/5 dark:border-white/10 shadow-sm mb-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#777481] dark:text-[#9590A3]">
-                <Sparkles className="w-3.5 h-3.5 text-[#5515E8]" />
-                <span>Original Campaign Brief</span>
-              </div>
-              <div className="text-xs text-[#777481] dark:text-[#9590A3]">
-                Audience: <strong className="text-[#19171F] dark:text-white">TypeScript & Backend Engineers</strong>
-              </div>
-            </div>
-            <p className="text-sm sm:text-base text-[#19171F] dark:text-white font-medium leading-relaxed bg-[#F7F6FA] dark:bg-[#14121F] p-4 rounded-xl border border-black/5 dark:border-white/5">
-              "We just released HyperSchema 1.0 — a zero-dependency CLI that generates type-safe database migrations in 400ms without bloated ORMs. Built in the open with Rust and TypeScript."
-            </p>
-          </div>
-
-          {/* Interactive Platform Tabs (Allowed functional button tabs) */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
-            {platformsList.map((p) => {
-              const pConfig = PLATFORM_CONFIGS[p];
-              const isActive = selectedPlatform === p;
-              return (
+          {/* Top Workspace Toolbar: Campaign Switcher + Platform Tabs */}
+          <div className="px-6 py-4 bg-white dark:bg-[#1A162B] border-b border-[#19171F]/10 dark:border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            
+            {/* Campaign Selector */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#777481] dark:text-[#9E9AA8] mr-1">
+                Sample Brief:
+              </span>
+              {INITIAL_CAMPAIGNS.map((camp) => (
                 <button
-                  key={p}
-                  onClick={() => setSelectedPlatform(p)}
-                  className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap shrink-0 transition-all ${
-                    isActive
-                      ? 'bg-[#5515E8] text-white shadow-md shadow-[#5515E8]/20'
-                      : 'bg-white dark:bg-[#1C182B] text-[#777481] dark:text-[#9590A3] hover:text-[#19171F] dark:hover:text-white border border-black/5 dark:border-white/5'
+                  key={camp.id}
+                  onClick={() => setSelectedCampaignId(camp.id)}
+                  className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-colors whitespace-nowrap ${
+                    selectedCampaignId === camp.id
+                      ? 'bg-[#19171F] text-white dark:bg-white dark:text-[#19171F]'
+                      : 'bg-[#F7F6FA] dark:bg-[#151221] text-[#777481] dark:text-[#9E9AA8] hover:text-[#19171F] dark:hover:text-white'
                   }`}
                 >
-                  {pConfig.name}
+                  {camp.name}
                 </button>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Platform Segmented Filter Tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0">
+              {platformsList.map((p) => {
+                const pConfig = PLATFORM_CONFIGS[p];
+                const isActive = selectedPlatform === p;
+                return (
+                  <button
+                    key={p}
+                    onClick={() => setSelectedPlatform(p)}
+                    className={`px-3 py-1.5 text-xs font-bold rounded-lg whitespace-nowrap shrink-0 transition-colors ${
+                      isActive
+                        ? 'bg-[#5515E8] text-white'
+                        : 'text-[#777481] dark:text-[#9E9AA8] hover:text-[#19171F] dark:hover:text-white hover:bg-[#F7F6FA] dark:hover:bg-white/5'
+                    }`}
+                  >
+                    {pConfig.shortLabel}
+                  </button>
+                );
+              })}
+            </div>
+
           </div>
 
-          {/* Bottom Half: Platform-Adapted Output Card */}
-          <div className="bg-white dark:bg-[#1C182B] rounded-2xl p-6 sm:p-8 border border-black/10 dark:border-white/10 shadow-md">
+          {/* 2-Column Split: Source Brief on Left, Adapted Platform Output on Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#19171F]/10 dark:divide-white/10">
             
-            {/* Header with platform name and metadata */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-black/5 dark:border-white/10 mb-5">
-              <div>
-                <div className="text-lg font-bold text-[#19171F] dark:text-white flex items-center gap-2">
-                  <span className={`w-2.5 h-2.5 rounded-full ${config.textColor}`} />
-                  {config.name} Draft
+            {/* Left Column (5 cols): Source Campaign Brief */}
+            <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between text-xs text-[#777481] dark:text-[#9E9AA8]">
+                  <span className="font-bold uppercase tracking-wider text-[#5515E8] dark:text-[#7886F8] flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Input Campaign Brief
+                  </span>
+                  <span className="font-mono">STEP 01</span>
                 </div>
-                {/* Zero-pill metadata */}
-                <div className="text-xs text-[#777481] dark:text-[#9590A3] mt-0.5">
-                  <span>Char Limit: {config.charLimit}</span>
-                  <span className="mx-2">·</span>
-                  <span>Angle: {activeDraft.angleExplanation}</span>
+
+                <div>
+                  <h3 className="font-display text-xl font-bold text-[#19171F] dark:text-white">
+                    {activeCampaign.name}
+                  </h3>
+                  <p className="mt-3 text-sm sm:text-base text-[#19171F] dark:text-gray-200 leading-relaxed">
+                    “{activeCampaign.brief}”
+                  </p>
+                </div>
+
+                {/* Unboxed Metadata Details */}
+                <div className="pt-4 border-t border-[#19171F]/10 dark:border-white/10 space-y-2 text-xs text-[#777481] dark:text-[#9E9AA8]">
+                  <div>
+                    <strong className="text-[#19171F] dark:text-white">Target Audience:</strong> {activeCampaign.audience}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span>
+                      <strong className="text-[#19171F] dark:text-white">Tone:</strong> {activeCampaign.tone}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                    <span>
+                      <strong className="text-[#19171F] dark:text-white">Objective:</strong> {activeCampaign.objective}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                    <span>
+                      <strong className="text-[#19171F] dark:text-white">Drafts:</strong> {activeCampaign.draftsCount}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleCopy(activeDraft.body, activeDraft.id)}
-                  className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#F7F6FA] dark:bg-[#14121F] hover:bg-black/10 dark:hover:bg-white/10 text-[#19171F] dark:text-white border border-black/10 dark:border-white/10 transition-colors flex items-center gap-1.5"
-                >
-                  {copiedDraftId === activeDraft.id ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>Copy Text</span>
-                    </>
-                  )}
-                </button>
-
+              <div className="mt-8 pt-4 border-t border-[#19171F]/10 dark:border-white/10">
                 <button
                   onClick={onOpenStudio}
-                  className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-[#5515E8] hover:bg-[#35108F] text-white transition-colors flex items-center gap-1.5"
+                  className="w-full py-3 px-4 rounded-xl bg-[#19171F] dark:bg-white text-white dark:text-[#19171F] hover:bg-[#5515E8] dark:hover:bg-[#7886F8] dark:hover:text-white text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2"
                 >
-                  <span>Edit in Studio</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>Open this campaign in Studio</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Hook Highlight */}
-            <div className="mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#5515E8]">Opening Hook:</span>
-              <p className="mt-1 text-base sm:text-lg font-bold text-[#19171F] dark:text-white leading-snug">
-                "{activeDraft.hook}"
-              </p>
-            </div>
+            {/* Right Column (7 cols): Platform-Specific Adapted Draft */}
+            <div className="lg:col-span-7 p-6 sm:p-8 bg-white dark:bg-[#120F1D] flex flex-col justify-between">
+              <div>
+                {/* Header with metadata and actions */}
+                <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-[#19171F]/10 dark:border-white/10">
+                  <div>
+                    <div className="font-display text-lg sm:text-xl font-bold text-[#19171F] dark:text-white">
+                      {config.name} Version
+                    </div>
+                    <div className="text-xs text-[#777481] dark:text-[#9E9AA8] mt-1 flex flex-wrap items-center gap-2">
+                      <span className="tabular-nums">
+                        {activeDraft.body.length} / {config.charLimit} chars
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span>Status: {activeDraft.status.toUpperCase()}</span>
+                      {activeDraft.scheduledDate && (
+                        <>
+                          <span aria-hidden="true">·</span>
+                          <span className="tabular-nums">Planned: {activeDraft.scheduledDate}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
 
-            {/* Draft Body Content */}
-            <div className="whitespace-pre-line text-sm sm:text-base text-[#19171F] dark:text-gray-200 font-normal leading-relaxed bg-[#F7F6FA]/50 dark:bg-[#14121F]/50 p-4 rounded-xl border border-black/5 dark:border-white/5 font-sans">
-              {activeDraft.body}
-            </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleCopy(activeDraft.body, activeDraft.id)}
+                      className="px-3.5 py-2 text-xs font-bold rounded-lg bg-[#F7F6FA] dark:bg-[#1A162B] hover:bg-[#F0EDFF] text-[#19171F] dark:text-white border border-[#19171F]/10 dark:border-white/10 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                    >
+                      {copiedDraftId === activeDraft.id ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Copied to clipboard</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Draft</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
 
-            {/* Hashtags and CTA */}
-            {activeDraft.hashtags && activeDraft.hashtags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2 text-xs font-mono text-[#5515E8] dark:text-[#7886F8]">
-                {activeDraft.hashtags.map((tag, i) => (
-                  <span key={i}>{tag}</span>
-                ))}
+                {/* Opening Hook Callout */}
+                <div className="mt-5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#5515E8] dark:text-[#7886F8]">
+                    Platform Hook
+                  </div>
+                  <p className="mt-1 font-display text-base sm:text-lg font-bold text-[#19171F] dark:text-white leading-snug">
+                    “{activeDraft.hook}”
+                  </p>
+                </div>
+
+                {/* Full Draft Body */}
+                <div className="mt-4 pt-4 border-t border-[#19171F]/10 dark:border-white/10 whitespace-pre-line text-sm sm:text-base text-[#19171F] dark:text-gray-200 leading-relaxed">
+                  {activeDraft.body}
+                </div>
               </div>
-            )}
+
+              {/* Footer Angle Note & Hashtags */}
+              <div className="mt-6 pt-4 border-t border-[#19171F]/10 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs text-[#777481] dark:text-[#9E9AA8]">
+                <span>
+                  <strong className="text-[#19171F] dark:text-white">Editorial Angle:</strong> {activeDraft.angleExplanation}
+                </span>
+                {activeDraft.hashtags.length > 0 && (
+                  <span className="font-mono text-[#5515E8] dark:text-[#7886F8]">
+                    {activeDraft.hashtags.join(' ')}
+                  </span>
+                )}
+              </div>
+            </div>
+
           </div>
 
         </div>
 
-      </div>
+      </RevealSection>
     </section>
   );
 };

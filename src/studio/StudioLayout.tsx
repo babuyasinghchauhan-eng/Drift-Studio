@@ -10,7 +10,6 @@ import {
   ArrowLeft,
   Sun,
   Moon,
-  Sparkles,
   Check,
   RotateCcw,
 } from 'lucide-react';
@@ -38,15 +37,16 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
   theme,
   onToggleTheme,
 }) => {
-  const [activeTab, setActiveTab] = useState<string>(initialTab);
+  const [activeTab, setActiveTab] = useState<string>(
+    initialTab === 'engine' ? 'dashboard' : initialTab
+  );
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [drafts, setDrafts] = useState<Draft[]>([]);
   const [selectedDraft, setSelectedDraft] = useState<Draft | null>(null);
-  const [isEngineModalOpen, setIsEngineModalOpen] = useState(false);
+  const [isEngineModalOpen, setIsEngineModalOpen] = useState<boolean>(initialTab === 'engine');
   const [engineStatus, setEngineStatus] = useState<ModelEngineStatus>(aiEngine.getStatus());
   const [toast, setToast] = useState<ToastMessage | null>(null);
 
-  // Load from persistent local storage on mount
   useEffect(() => {
     const loadedCampaigns = StorageService.loadCampaigns();
     const loadedDrafts = StorageService.loadDrafts();
@@ -62,7 +62,7 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
     setToast({ id, type: 'success', title, description, undoAction });
     setTimeout(() => {
       setToast((prev) => (prev?.id === id ? null : prev));
-    }, 4000);
+    }, 4200);
   };
 
   const handleCampaignCreated = (newCampaign: Campaign, newDrafts: Draft[]) => {
@@ -73,32 +73,34 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
     StorageService.saveCampaigns(updatedCampaigns);
     StorageService.saveDrafts(updatedDrafts);
     showToast(
-      'Campaign generated!',
+      'Campaign created',
       `${newDrafts.length} platform drafts added to your board.`
     );
     setActiveTab('board');
   };
 
   const handleSaveDraft = (updated: Draft) => {
-    const updatedDrafts = drafts.map((d) => (d.id === updated.id ? updated : d));
+    const exists = drafts.some((d) => d.id === updated.id);
+    const updatedDrafts = exists
+      ? drafts.map((d) => (d.id === updated.id ? updated : d))
+      : [updated, ...drafts];
     setDrafts(updatedDrafts);
     StorageService.saveDrafts(updatedDrafts);
-    showToast('Draft updated successfully');
+    showToast('Draft saved');
   };
 
   const handleDeleteDraft = (id: string) => {
     const deletedDraft = drafts.find((d) => d.id === id);
+    const previousDrafts = [...drafts];
     const updatedDrafts = drafts.filter((d) => d.id !== id);
     setDrafts(updatedDrafts);
     StorageService.saveDrafts(updatedDrafts);
     setSelectedDraft(null);
 
-    // Provide undo action!
     if (deletedDraft) {
       showToast('Draft deleted', undefined, () => {
-        const restored = [...drafts];
-        setDrafts(restored);
-        StorageService.saveDrafts(restored);
+        setDrafts(previousDrafts);
+        StorageService.saveDrafts(previousDrafts);
       });
     }
   };
@@ -129,11 +131,13 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
 
   const handleRescheduleDraft = (id: string, date: string, time?: string) => {
     const updatedDrafts = drafts.map((d) =>
-      d.id === id ? { ...d, scheduledDate: date, scheduledTime: time } : d
+      d.id === id
+        ? { ...d, scheduledDate: date || undefined, scheduledTime: date ? time : undefined }
+        : d
     );
     setDrafts(updatedDrafts);
     StorageService.saveDrafts(updatedDrafts);
-    showToast('Scheduled date updated');
+    showToast(date ? `Scheduled for ${date}` : 'Removed from schedule');
   };
 
   const handleCreateDraftInStage = (stage: ContentStatus) => {
@@ -143,13 +147,14 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
       campaignName: campaigns[0]?.name || 'Direct Draft',
       platform: 'x',
       hook: 'New draft concept...',
-      body: 'Write your content here...',
+      body: 'Write your social post content here...',
       hashtags: [],
       callToAction: '',
-      angleExplanation: 'Manually drafted',
+      angleExplanation: 'Manually created in Studio',
       status: stage,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      generatedBy: 'manual',
     };
     const updated = [newDraft, ...drafts];
     setDrafts(updated);
@@ -164,7 +169,7 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
       campaignName: campaigns[0]?.name || 'Planned Release',
       platform: 'x',
       hook: 'Planned content idea...',
-      body: 'Content for scheduled release...',
+      body: 'Write your scheduled post here...',
       hashtags: [],
       callToAction: '',
       angleExplanation: 'Planned in weekly calendar',
@@ -173,6 +178,7 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
       scheduledTime: '10:00',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      generatedBy: 'manual',
     };
     const updated = [newDraft, ...drafts];
     setDrafts(updated);
@@ -181,32 +187,34 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F6FA] dark:bg-[#0C0B12] text-[#19171F] dark:text-white flex flex-col transition-colors">
+    <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''} bg-[#F7F6FA] dark:bg-[#0D0B14] text-[#19171F] dark:text-white flex flex-col transition-colors`}>
       
-      {/* Studio Header Bar */}
-      <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-[#120F1F]/90 backdrop-blur-md border-b border-black/5 dark:border-white/10 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      {/* Studio Top Bar */}
+      <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#120F1F]/95 backdrop-blur-md border-b border-[#19171F]/10 dark:border-white/10 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
-        {/* Left: Brand + Exit to Showcase */}
+        {/* Left: Back to Showcase + Brand Wordmark */}
         <div className="flex items-center gap-3">
           <button
             onClick={onExitToLanding}
-            className="p-2 rounded-xl text-[#777481] hover:text-[#19171F] dark:text-[#9590A3] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+            className="px-3 py-2 rounded-xl text-[#777481] hover:text-[#19171F] dark:text-[#9E9AA8] dark:hover:text-white hover:bg-[#F7F6FA] dark:hover:bg-white/5 transition-colors flex items-center gap-1.5 text-xs font-bold"
             title="Return to Landing Page"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Showcase</span>
           </button>
 
-          <div className="h-4 w-px bg-black/10 dark:bg-white/10 hidden sm:block" />
+          <div className="h-4 w-px bg-[#19171F]/10 dark:bg-white/10 hidden sm:block" />
 
-          <div className="text-base sm:text-lg font-black tracking-tight text-[#19171F] dark:text-white flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#5515E8]" />
-            <span>Drift Studio</span>
-          </div>
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#19171F] dark:text-white whitespace-nowrap"
+          >
+            Drift Studio
+          </button>
         </div>
 
-        {/* Center: Navigation Tabs (Clean segmented control buttons) */}
-        <nav className="hidden md:flex items-center gap-1 p-1 bg-[#F7F6FA] dark:bg-[#1C182B] rounded-2xl border border-black/5 dark:border-white/5 text-xs font-semibold text-[#777481] dark:text-[#9590A3]">
+        {/* Center: Workspace Segmented Navigation Tabs */}
+        <nav aria-label="Workspace views" className="hidden md:flex items-center gap-1 p-1 bg-[#F7F6FA] dark:bg-[#1C182B] rounded-xl border border-[#19171F]/10 dark:border-white/10 text-xs font-bold text-[#777481] dark:text-[#9E9AA8]">
           {[
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { id: 'create', label: 'New Plan', icon: PlusCircle },
@@ -220,9 +228,9 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   isActive
-                    ? 'bg-white dark:bg-[#2A2342] text-[#5515E8] dark:text-white shadow-sm font-bold'
+                    ? 'bg-white dark:bg-[#2A2342] text-[#5515E8] dark:text-white shadow-sm'
                     : 'hover:text-[#19171F] dark:hover:text-white'
                 }`}
               >
@@ -233,33 +241,35 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
           })}
         </nav>
 
-        {/* Right: Engine Status Pill + Exports + Theme Toggle */}
+        {/* Right: Model Status Trigger + Export + Theme */}
         <div className="flex items-center gap-2">
-          {/* Live Engine Diagnostic Trigger */}
           <button
             onClick={() => setIsEngineModalOpen(true)}
-            className="px-2.5 py-1.5 rounded-xl bg-[#5515E8]/10 text-[#5515E8] dark:text-[#B197FC] hover:bg-[#5515E8]/20 transition-colors text-xs font-mono font-semibold flex items-center gap-1.5"
-            title="Click for AI engine telemetry & settings"
+            className="px-3 py-2 rounded-xl bg-[#F0EDFF] dark:bg-[#5515E8]/20 text-[#5515E8] dark:text-[#7886F8] hover:bg-[#5515E8] hover:text-white transition-colors text-xs font-mono font-bold flex items-center gap-1.5 whitespace-nowrap"
+            title="Inspect AI model status & runtime mode"
           >
             <Cpu className="w-3.5 h-3.5" />
-            <span className="hidden lg:inline">{engineStatus.mode === 'webgpu' ? 'WebGPU' : 'Fast Engine'}</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="hidden lg:inline">
+              {engineStatus.isDemoMode ? 'Demo Mode' : 'Live Open-AI'}
+            </span>
           </button>
 
-          {/* Quick Export Dropdown */}
           <button
-            onClick={() => StorageService.exportToJSON(campaigns, drafts)}
-            className="p-2 rounded-xl text-[#777481] hover:text-[#19171F] dark:text-[#9590A3] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors hidden sm:flex items-center gap-1 text-xs font-semibold"
+            onClick={() => {
+              StorageService.exportToJSON(campaigns, drafts);
+              showToast('Exported workspace JSON backup');
+            }}
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-[#777481] hover:text-[#19171F] dark:text-[#9E9AA8] dark:hover:text-white hover:bg-[#F7F6FA] dark:hover:bg-white/5 transition-colors"
             title="Download JSON Workspace Backup"
+            aria-label="Download JSON Workspace Backup"
           >
             <Download className="w-4 h-4" />
           </button>
 
-          {/* Theme Toggle */}
           <button
             onClick={onToggleTheme}
-            className="p-2 rounded-xl text-[#777481] hover:text-[#19171F] dark:text-[#9590A3] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-            aria-label="Toggle theme"
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-[#777481] hover:text-[#19171F] dark:text-[#9E9AA8] dark:hover:text-white hover:bg-[#F7F6FA] dark:hover:bg-white/5 transition-colors"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
@@ -267,8 +277,8 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
 
       </header>
 
-      {/* Mobile Sub-Navigation Bar */}
-      <div className="md:hidden bg-white dark:bg-[#120F1F] border-b border-black/5 dark:border-white/10 px-4 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs">
+      {/* Mobile Workspace Navigation Bar */}
+      <div className="md:hidden bg-white dark:bg-[#120F1F] border-b border-[#19171F]/10 dark:border-white/10 px-4 py-2 flex items-center gap-2 overflow-x-auto text-xs font-bold">
         {[
           { id: 'dashboard', label: 'Dashboard' },
           { id: 'create', label: '+ New Plan' },
@@ -279,10 +289,10 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3 py-1.5 rounded-xl whitespace-nowrap shrink-0 ${
+            className={`px-3.5 py-2 rounded-lg whitespace-nowrap shrink-0 ${
               activeTab === tab.id
-                ? 'bg-[#5515E8] text-white font-bold'
-                : 'bg-[#F7F6FA] dark:bg-[#1C182B] text-[#777481] dark:text-[#9590A3]'
+                ? 'bg-[#5515E8] text-white'
+                : 'bg-[#F7F6FA] dark:bg-[#1C182B] text-[#777481] dark:text-[#9E9AA8]'
             }`}
           >
             {tab.label}
@@ -306,6 +316,7 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
           <CampaignCreatorView
             onCampaignCreated={handleCampaignCreated}
             onCancel={() => setActiveTab('dashboard')}
+            onOpenEngineModal={() => setIsEngineModalOpen(true)}
           />
         )}
 
@@ -339,7 +350,7 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
         )}
       </main>
 
-      {/* Full Draft Editor Modal */}
+      {/* Draft Editor Modal */}
       {selectedDraft && (
         <DraftModal
           draft={selectedDraft}
@@ -359,11 +370,18 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
 
       {/* Accessible Toast Notification with Undo */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 p-4 rounded-2xl bg-[#19171F] dark:bg-white text-white dark:text-[#19171F] shadow-2xl border border-white/10 dark:border-black/10 text-xs animate-in slide-in-from-bottom-5">
-          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div
+          role="status"
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 p-4 rounded-xl bg-[#19171F] dark:bg-white text-white dark:text-[#19171F] shadow-2xl border border-white/10 dark:border-black/10 text-xs"
+        >
+          <Check className="w-4 h-4 text-emerald-400 dark:text-emerald-600 shrink-0" />
           <div>
             <div className="font-bold">{toast.title}</div>
-            {toast.description && <div className="text-white/70 dark:text-black/70 text-[11px] mt-0.5">{toast.description}</div>}
+            {toast.description && (
+              <div className="text-white/75 dark:text-black/75 text-[11px] mt-0.5">
+                {toast.description}
+              </div>
+            )}
           </div>
           {toast.undoAction && (
             <button
@@ -371,7 +389,7 @@ export const StudioLayout: React.FC<StudioLayoutProps> = ({
                 toast.undoAction?.();
                 setToast(null);
               }}
-              className="ml-2 px-2.5 py-1 rounded-lg bg-white/20 dark:bg-black/10 hover:bg-white/30 text-xs font-bold flex items-center gap-1"
+              className="ml-2 px-3 py-1.5 rounded-lg bg-white/20 dark:bg-black/10 hover:bg-white/30 text-xs font-bold flex items-center gap-1"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Undo</span>

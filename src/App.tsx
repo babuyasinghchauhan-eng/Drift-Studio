@@ -18,16 +18,24 @@ export default function App() {
   const [currentView, setCurrentView] = useState<'landing' | 'studio'>('landing');
   const [studioInitialTab, setStudioInitialTab] = useState<string>('dashboard');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [savedCounts, setSavedCounts] = useState<{ campaigns: number; drafts: number }>({
+    campaigns: 2,
+    drafts: 7,
+  });
 
   useEffect(() => {
     const savedTheme = StorageService.getTheme();
     setTheme(savedTheme);
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    StorageService.setTheme(savedTheme);
   }, []);
+
+  useEffect(() => {
+    if (currentView === 'landing') {
+      const camps = StorageService.loadCampaigns();
+      const drs = StorageService.loadDrafts();
+      setSavedCounts({ campaigns: camps.length, drafts: drs.length });
+    }
+  }, [currentView]);
 
   const handleToggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -60,7 +68,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0C0B12] text-[#19171F] dark:text-white transition-colors">
+    <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''} bg-white dark:bg-[#0D0B14] text-[#19171F] dark:text-white transition-colors`}>
       {/* Top Bar Contract (Wordmark, single-line links, primary action) */}
       <Navbar
         currentView={currentView}
@@ -69,39 +77,43 @@ export default function App() {
         onToggleTheme={handleToggleTheme}
       />
 
-      {/* Main Content Sections (Story-led narrative from Scene A to Scene J) */}
+      {/* Main Content Sections (Scenes A through J) */}
       <main>
-        {/* Scene A: Hero with editorial headlines and multidimensional artwork */}
+        {/* Scene A: Hero with editorial headlines and electric-violet artwork */}
         <HeroSection
           onStartPlan={() => handleNavigate('studio', 'create')}
           onExplore={handleScrollToProduct}
         />
 
-        {/* Scene B: Immersive transition with sculptural creative momentum */}
+        {/* Scene B: Immersive violet visual moment with original sculptural character */}
         <MomentumSection onOpenStudio={() => handleNavigate('studio', 'create')} />
 
-        {/* Scene C: The product in action with realistic platform drafts */}
+        {/* Scene C: The product in action demonstrating one idea becoming multiple posts */}
         <ProductInActionSection onOpenStudio={() => handleNavigate('studio', 'board')} />
 
-        {/* Scene D: Intelligent content tools (tone switch, hook variations, etc.) */}
-        <IntelligentToolsSection />
+        {/* Scene D: Intelligent content tools with interactive controls & live saved counts */}
+        <IntelligentToolsSection
+          savedCampaignsCount={savedCounts.campaigns}
+          savedDraftsCount={savedCounts.drafts}
+          onOpenBoard={() => handleNavigate('studio', 'board')}
+        />
 
-        {/* Scene E: Genuine integrations and exports (CSV, JSON, TXT, Clipboard) */}
+        {/* Scene E: Genuine exports and data ownership (TXT, CSV, JSON, Clipboard) */}
         <IntegrationsExportSection />
 
-        {/* Scene F: The 3-step workflow (01 Capture, 02 Open AI draft, 03 Review & organize) */}
+        {/* Scene F: Three-step workflow with distinct compositions */}
         <WorkflowSection onStartWorkflow={() => handleNavigate('studio', 'create')} />
 
-        {/* Scene G: Open AI, open possibilities with live engine telemetry */}
+        {/* Scene G: Open AI, open possibilities with live model-status component */}
         <OpenAiSection />
 
-        {/* Scene H: Inside a campaign before/after breakdown */}
-        <InsideCampaignSection />
+        {/* Scene H: Inside a campaign before/after showcase */}
+        <InsideCampaignSection onOpenStudio={() => handleNavigate('studio', 'board')} />
 
-        {/* Scene I: Accessible FAQ */}
+        {/* Scene I: Accessible expandable FAQ */}
         <FaqSection />
 
-        {/* Scene J: Final dramatic periwinkle/violet CTA */}
+        {/* Scene J: Dramatic violet final CTA */}
         <CtaSection onStartCreating={() => handleNavigate('studio', 'create')} />
       </main>
 

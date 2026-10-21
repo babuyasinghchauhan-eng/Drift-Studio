@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Info } from 'lucide-react';
 import { Draft } from '../types';
 import { PLATFORM_CONFIGS } from '../constants';
 
@@ -16,10 +16,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   onRescheduleDraft,
   onCreateDraftForDate,
 }) => {
-  // Current viewing date anchor (defaults to Oct 21, 2026 or current system date)
   const [currentDate, setCurrentDate] = useState<Date>(new Date('2026-10-21'));
 
-  // Calculate the Monday of the current viewing week
   const getMonday = (d: Date) => {
     const date = new Date(d);
     const day = date.getDay();
@@ -29,7 +27,6 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
   const monday = getMonday(currentDate);
 
-  // Generate 7 days for the week
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const day = new Date(monday);
     day.setDate(monday.getDate() + i);
@@ -40,7 +37,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       dayName: day.toLocaleDateString('en-US', { weekday: 'short' }),
       dayNumber: day.getDate(),
       monthName: day.toLocaleDateString('en-US', { month: 'short' }),
-      isToday: day.toISOString().slice(0, 10) === '2026-10-21',
+      isToday: dateString === '2026-10-21',
     };
   });
 
@@ -61,18 +58,22 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   };
 
   const weekRangeLabel = `${weekDays[0].monthName} ${weekDays[0].dayNumber} – ${weekDays[6].monthName} ${weekDays[6].dayNumber}, ${weekDays[0].date.getFullYear()}`;
+  const unscheduledDrafts = drafts.filter((d) => !d.scheduledDate);
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
+    <div className="space-y-6">
       
-      {/* Calendar Controls & Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/5 dark:border-white/10">
+      {/* Header & Week Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#19171F]/10 dark:border-white/10">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#19171F] dark:text-white flex items-center gap-2">
+          <div className="text-xs font-bold tracking-[0.14em] text-[#5515E8] dark:text-[#7886F8] uppercase mb-1">
+            LOCAL SCHEDULE PLANNER
+          </div>
+          <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-[#19171F] dark:text-white">
             Weekly Content Calendar
           </h1>
-          <p className="text-xs sm:text-sm text-[#777481] dark:text-[#9590A3] mt-0.5">
-            Local publishing plan. Keeps your release cadence organized without third-party bots.
+          <p className="text-xs sm:text-sm text-[#777481] dark:text-[#9E9AA8] mt-0.5">
+            Plan your weekly publishing cadence locally. Ordinary touch scrolling will never accidentally reschedule a post.
           </p>
         </div>
 
@@ -80,7 +81,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={resetToday}
-            className="px-3 py-1.5 text-xs font-bold rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#151222] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            className="min-h-[40px] px-3.5 py-1.5 text-xs font-bold rounded-xl border border-[#19171F]/15 dark:border-white/15 bg-white dark:bg-[#151221] hover:bg-[#F7F6FA] dark:hover:bg-white/10 transition-colors"
           >
             Today
           </button>
@@ -88,34 +89,34 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           <button
             onClick={prevWeek}
             aria-label="Previous week"
-            className="p-1.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#151222] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            className="w-10 h-10 rounded-xl flex items-center justify-center border border-[#19171F]/15 dark:border-white/15 bg-white dark:bg-[#151221] hover:bg-[#F7F6FA] dark:hover:bg-white/10 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
 
-          <span className="text-xs sm:text-sm font-bold text-[#19171F] dark:text-white px-2">
+          <span className="text-xs sm:text-sm font-bold text-[#19171F] dark:text-white px-2 tabular-nums">
             {weekRangeLabel}
           </span>
 
           <button
             onClick={nextWeek}
             aria-label="Next week"
-            className="p-1.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#151222] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            className="w-10 h-10 rounded-xl flex items-center justify-center border border-[#19171F]/15 dark:border-white/15 bg-white dark:bg-[#151221] hover:bg-[#F7F6FA] dark:hover:bg-white/10 transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Honest Local Planning Disclosure Banner */}
-      <div className="p-3.5 rounded-2xl bg-[#F0EDFF] dark:bg-[#1A162B] border border-[#5515E8]/20 flex items-center gap-2 text-xs text-[#5515E8] dark:text-[#B197FC]">
-        <Info className="w-4 h-4 shrink-0" />
+      {/* Honest Local Planning Disclosure */}
+      <div className="p-4 rounded-2xl bg-[#F0EDFF] dark:bg-[#1A162B] border border-[#5515E8]/20 flex items-center gap-2.5 text-xs text-[#19171F] dark:text-gray-200">
+        <Info className="w-4 h-4 text-[#5515E8] dark:text-[#7886F8] shrink-0" />
         <span>
-          <strong>Local Editorial Calendar:</strong> Dates and times represent your personal planning schedule. Drift does not automatically transmit posts to third-party social networks.
+          <strong>Local Planning Feature:</strong> Dates represent your local editorial schedule stored in this browser. Posts are not automatically published to social platforms.
         </span>
       </div>
 
-      {/* 7-Day Grid */}
+      {/* 7-Day Weekly Grid */}
       <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
         {weekDays.map((day) => {
           const dayDrafts = drafts.filter((d) => d.scheduledDate === day.dateString);
@@ -123,74 +124,171 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           return (
             <div
               key={day.dateString}
-              className={`rounded-3xl p-3.5 border flex flex-col min-h-[380px] transition-all ${
+              className={`rounded-[22px] p-3.5 border flex flex-col min-h-[340px] ${
                 day.isToday
-                  ? 'bg-white dark:bg-[#1B172C] border-[#5515E8] shadow-md shadow-[#5515E8]/10'
-                  : 'bg-[#F7F6FA] dark:bg-[#141121] border-black/5 dark:border-white/10'
+                  ? 'bg-white dark:bg-[#1B172C] border-[#5515E8]'
+                  : 'bg-[#F7F6FA] dark:bg-[#141121] border-[#19171F]/10 dark:border-white/10'
               }`}
             >
               {/* Day Header */}
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-black/5 dark:border-white/5">
+              <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#19171F]/10 dark:border-white/10">
                 <div>
-                  <span className="text-xs font-bold text-[#777481] dark:text-[#9590A3] uppercase">
+                  <span className="text-xs font-bold text-[#777481] dark:text-[#9E9AA8] uppercase">
                     {day.dayName}
                   </span>
-                  <div className={`text-lg font-black ${day.isToday ? 'text-[#5515E8]' : 'text-[#19171F] dark:text-white'}`}>
-                    {day.dayNumber}
+                  <div
+                    className={`font-display text-lg font-extrabold tabular-nums ${
+                      day.isToday ? 'text-[#5515E8] dark:text-[#7886F8]' : 'text-[#19171F] dark:text-white'
+                    }`}
+                  >
+                    {day.monthName} {day.dayNumber}
                   </div>
                 </div>
 
                 <button
                   onClick={() => onCreateDraftForDate(day.dateString)}
-                  title="Plan post for this day"
-                  className="p-1 rounded-lg text-[#777481] hover:text-[#5515E8] hover:bg-black/5 dark:hover:bg-white/5"
+                  title={`Plan post for ${day.dayName}`}
+                  aria-label={`Plan post for ${day.dayName}`}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-[#777481] hover:text-[#5515E8] hover:bg-black/5 dark:hover:bg-white/5"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Day Drafts List */}
-              <div className="space-y-2.5 flex-1 overflow-y-auto">
+              {/* Day Drafts */}
+              <div className="space-y-2.5 flex-1">
                 {dayDrafts.map((draft) => {
                   const cfg = PLATFORM_CONFIGS[draft.platform];
                   return (
                     <div
                       key={draft.id}
                       onClick={() => onOpenDraft(draft)}
-                      className="p-3 rounded-2xl bg-white dark:bg-[#161224] border border-black/5 dark:border-white/5 shadow-sm hover:border-[#5515E8] cursor-pointer transition-all space-y-1.5"
+                      className="p-3 rounded-xl bg-white dark:bg-[#161224] border border-[#19171F]/10 dark:border-white/10 hover:border-[#5515E8] cursor-pointer transition-all space-y-2"
                     >
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-bold flex items-center gap-1 text-[#19171F] dark:text-white">
-                          <span className={`w-1.5 h-1.5 rounded-full ${cfg.textColor}`} />
+                        <span className="font-bold text-[#5515E8] dark:text-[#7886F8]">
                           {cfg.shortLabel}
                         </span>
                         {draft.scheduledTime && (
-                          <span className="text-[#777481] dark:text-[#9590A3] font-mono text-[10px]">
+                          <span className="text-[#777481] dark:text-[#9E9AA8] font-mono tabular-nums text-[10px]">
                             {draft.scheduledTime}
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs font-semibold text-[#19171F] dark:text-white line-clamp-2 leading-snug">
-                        "{draft.hook}"
+                      <p className="text-xs font-bold text-[#19171F] dark:text-white line-clamp-2 leading-snug">
+                        “{draft.hook}”
                       </p>
 
-                      <div className="text-[10px] text-[#5515E8] font-medium pt-1 border-t border-black/5 dark:border-white/5">
-                        {draft.status.toUpperCase()}
+                      <div className="text-[10px] font-mono text-[#777481] dark:text-[#9E9AA8] uppercase">
+                        Status: {draft.status}
+                      </div>
+
+                      {/* Explicit Rescheduling Control (Touch-safe) */}
+                      <div
+                        className="pt-2 border-t border-[#19171F]/10 dark:border-white/10"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <select
+                          aria-label={`Reschedule ${draft.hook}`}
+                          value={draft.scheduledDate || ''}
+                          onChange={(e) =>
+                            onRescheduleDraft(draft.id, e.target.value, draft.scheduledTime || '10:00')
+                          }
+                          className="w-full px-2 py-1 rounded-md border border-[#19171F]/15 dark:border-white/15 bg-[#F7F6FA] dark:bg-[#141121] text-[10px] font-bold text-[#19171F] dark:text-white"
+                        >
+                          {weekDays.map((wd) => (
+                            <option key={wd.dateString} value={wd.dateString}>
+                              Move to {wd.dayName} ({wd.monthName} {wd.dayNumber})
+                            </option>
+                          ))}
+                          <option value="">Unschedule</option>
+                        </select>
                       </div>
                     </div>
                   );
                 })}
 
                 {dayDrafts.length === 0 && (
-                  <div className="h-full flex items-center justify-center text-[11px] text-[#777481]/60 dark:text-[#9590A3]/60 italic">
-                    No posts planned
+                  <div className="h-36 flex flex-col items-center justify-center text-center p-2">
+                    <span className="text-[11px] text-[#777481] dark:text-[#9E9AA8]">No posts planned</span>
+                    <button
+                      onClick={() => onCreateDraftForDate(day.dateString)}
+                      className="mt-1 text-[11px] font-bold text-[#5515E8] dark:text-[#7886F8] hover:underline"
+                    >
+                      + Plan draft
+                    </button>
                   </div>
                 )}
               </div>
             </div>
           );
         })}
+      </div>
+
+      {/* Unscheduled Drafts Tray (Allows scheduling any unscheduled draft onto the current week) */}
+      <div className="bg-white dark:bg-[#151221] rounded-[24px] p-6 border border-[#19171F]/10 dark:border-white/10">
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#19171F]/10 dark:border-white/10">
+          <div>
+            <h2 className="font-display text-base font-bold text-[#19171F] dark:text-white">
+              Unscheduled Drafts ({unscheduledDrafts.length})
+            </h2>
+            <p className="text-xs text-[#777481] dark:text-[#9E9AA8]">
+              Assign any unscheduled draft to a day in the current week.
+            </p>
+          </div>
+        </div>
+
+        {unscheduledDrafts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {unscheduledDrafts.map((d) => {
+              const cfg = PLATFORM_CONFIGS[d.platform];
+              return (
+                <div
+                  key={d.id}
+                  className="p-4 rounded-xl bg-[#F7F6FA] dark:bg-[#1C182B] border border-[#19171F]/10 dark:border-white/10 flex flex-col justify-between gap-3"
+                >
+                  <div>
+                    <div className="text-xs font-bold text-[#5515E8] dark:text-[#7886F8]">
+                      {cfg.name} · {d.status.toUpperCase()}
+                    </div>
+                    <button
+                      onClick={() => onOpenDraft(d)}
+                      className="mt-1 text-left font-display text-sm font-bold text-[#19171F] dark:text-white hover:underline line-clamp-2"
+                    >
+                      “{d.hook}”
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#19171F]/10 dark:border-white/10">
+                    <span className="text-[11px] text-[#777481] dark:text-[#9E9AA8]">Assign day:</span>
+                    <select
+                      aria-label={`Schedule ${d.hook}`}
+                      value=""
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          onRescheduleDraft(d.id, e.target.value, '10:00');
+                        }
+                      }}
+                      className="px-2.5 py-1 rounded-lg border border-[#19171F]/15 dark:border-white/15 bg-white dark:bg-[#141121] text-xs font-bold text-[#19171F] dark:text-white"
+                    >
+                      <option value="">Select date...</option>
+                      {weekDays.map((wd) => (
+                        <option key={wd.dateString} value={wd.dateString}>
+                          {wd.dayName}, {wd.monthName} {wd.dayNumber}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-xs text-[#777481] dark:text-[#9E9AA8]">
+            All saved drafts currently have a planned date on the calendar.
+          </div>
+        )}
       </div>
 
     </div>

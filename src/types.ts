@@ -34,6 +34,7 @@ export interface Draft {
   createdAt: string;
   updatedAt: string;
   characterCount?: number;
+  generatedBy?: 'open_weight_model' | 'demo_mode' | 'manual';
 }
 
 export interface Campaign {
@@ -70,16 +71,28 @@ export interface GenerationRequest {
 
 export type EngineMode = 'webgpu' | 'cpu_wasm' | 'instant_demo';
 
+export type EngineLifecycleState =
+  | 'demo'
+  | 'loading'
+  | 'ready'
+  | 'generating'
+  | 'unavailable'
+  | 'error';
+
 export interface ModelEngineStatus {
   mode: EngineMode;
-  state: 'uninitialized' | 'loading' | 'ready' | 'generating' | 'error';
+  state: EngineLifecycleState;
   modelName: string;
+  modelCheckpoint: string;
   webgpuSupported: boolean;
   adapterInfo?: string;
   deviceTier?: string;
+  downloadProgress?: number;
+  downloadStatusText?: string;
   lastLatencyMs?: number;
   errorMessage?: string;
   isDemoMode: boolean;
+  isModelLoaded: boolean;
 }
 
 export interface ToastMessage {

@@ -1,150 +1,261 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowUpRight, Heart, MessageSquare, Repeat } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Check, Calendar, Layers } from 'lucide-react';
 
-export const HeroArtwork: React.FC = () => {
-  const [activeCard, setActiveCard] = useState<'x' | 'linkedin' | 'ig'>('x');
+interface HeroArtworkProps {
+  onOpenStudio?: () => void;
+}
+
+const HERO_SAMPLES = [
+  {
+    id: 'x',
+    platform: 'X Thread',
+    schedule: 'Thu · 09:30',
+    accent: '#5515E8',
+    hook: 'Most database migration tools feel like moving a mountain just to add one column.',
+    meta: '240 chars · Hook + 4 bullets · Ready',
+  },
+  {
+    id: 'linkedin',
+    platform: 'LinkedIn Essay',
+    schedule: 'Fri · 13:00',
+    accent: '#FF7A30',
+    hook: 'We spent 9 months building a CLI that intentionally does less than every competitor.',
+    meta: '1,180 chars · Story arc · In Review',
+  },
+  {
+    id: 'instagram',
+    platform: 'Carousel Script',
+    schedule: 'Mon · 11:00',
+    accent: '#FF4FA3',
+    hook: 'Slide 1: Why 90% of indie creators burn out in month 3 — and the studio fix.',
+    meta: '5 slides · Visual outline · Draft',
+  },
+];
+
+export const HeroArtwork: React.FC<HeroArtworkProps> = ({ onOpenStudio }) => {
+  const [selectedId, setSelectedId] = useState<string>('x');
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto mt-8 select-none">
-      {/* Background Dimensional Ambient Glow */}
-      <div 
-        className="absolute inset-0 -top-12 bg-gradient-to-b from-[#5515E8]/18 via-[#FF4FA3]/10 to-transparent blur-3xl pointer-events-none rounded-3xl"
-        aria-hidden="true"
-      />
-
-      {/* Main Artwork Stage */}
-      <div className="relative w-full h-[460px] sm:h-[520px] md:h-[580px] bg-gradient-to-br from-[#1C0D45] via-[#2A1166] to-[#0E0624] rounded-3xl border border-white/10 shadow-2xl overflow-hidden flex items-center justify-center">
+    <div className="relative w-full max-w-6xl mx-auto mt-10 sm:mt-14 select-none">
+      {/* Main Electric-Violet Sculptural Stage */}
+      <div className="relative w-full rounded-[28px] sm:rounded-[36px] bg-[#5515E8] text-white p-5 sm:p-8 md:p-12 shadow-[0_28px_70px_-15px_rgba(85,21,232,0.42)] overflow-hidden border border-[#7886F8]/40">
         
-        {/* Orbital Curved Paths (SVG vector layer) */}
-        <svg 
-          className="absolute inset-0 w-full h-full pointer-events-none opacity-40" 
-          viewBox="0 0 1000 600" 
-          fill="none" 
+        {/* Bespoke Multidimensional SVG Artwork Layer (Pointer-events-none) */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          viewBox="0 0 1200 680"
+          fill="none"
+          preserveAspectRatio="xMidYMid slice"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
-          {/* Orbital path 1 */}
-          <ellipse cx="500" cy="300" rx="380" ry="180" stroke="url(#orbitalGradient1)" strokeWidth="1.5" strokeDasharray="6 8" />
-          {/* Orbital path 2 */}
-          <ellipse cx="500" cy="300" rx="460" ry="240" stroke="url(#orbitalGradient2)" strokeWidth="1" />
-          {/* Wave line */}
-          <path d="M 50,450 C 300,550 400,200 650,280 C 850,340 920,180 980,240" stroke="rgba(248, 232, 76, 0.3)" strokeWidth="2" strokeLinecap="round" />
-          
-          <defs>
-            <linearGradient id="orbitalGradient1" x1="120" y1="120" x2="880" y2="480" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#7886F8" stopOpacity="0.8" />
-              <stop offset="0.5" stopColor="#FF4FA3" stopOpacity="0.6" />
-              <stop offset="1" stopColor="#F8E84C" stopOpacity="0.2" />
-            </linearGradient>
-            <linearGradient id="orbitalGradient2" x1="0" y1="300" x2="1000" y2="300" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#5515E8" stopOpacity="0.1" />
-              <stop offset="0.5" stopColor="#7886F8" stopOpacity="0.5" />
-              <stop offset="1" stopColor="#FF7A30" stopOpacity="0.1" />
-            </linearGradient>
-          </defs>
+          {/* Deep Violet Architectural Curves */}
+          <circle cx="600" cy="340" r="460" fill="#35108F" fillOpacity="0.45" />
+          <circle cx="600" cy="340" r="320" fill="#4612C4" fillOpacity="0.65" />
+
+          {/* Orbital Paths */}
+          <ellipse
+            cx="600"
+            cy="340"
+            rx="520"
+            ry="230"
+            transform="rotate(-8 600 340)"
+            stroke="#7886F8"
+            strokeOpacity="0.45"
+            strokeWidth="1.5"
+            strokeDasharray="8 10"
+          />
+          <ellipse
+            cx="600"
+            cy="340"
+            rx="390"
+            ry="175"
+            transform="rotate(6 600 340)"
+            stroke="#F0EDFF"
+            strokeOpacity="0.3"
+            strokeWidth="1.2"
+          />
+
+          {/* Sculptural Hot-Pink Ribbon */}
+          <path
+            d="M-60 520 C 180 390, 340 610, 590 430 C 830 260, 990 470, 1260 280"
+            stroke="#FF4FA3"
+            strokeWidth="28"
+            strokeLinecap="round"
+            strokeOpacity="0.85"
+          />
+
+          {/* Sunshine Yellow Kinetic Wave */}
+          <path
+            d="M 80 120 C 290 240, 460 40, 740 160 C 960 250, 1080 90, 1240 170"
+            stroke="#F8E84C"
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeOpacity="0.9"
+          />
+
+          {/* Dimensional Geometric Accents */}
+          {/* Top-left Tangerine Arch */}
+          <rect
+            x="64"
+            y="58"
+            width="68"
+            height="68"
+            rx="20"
+            transform="rotate(-14 64 58)"
+            fill="#FF7A30"
+          />
+          {/* Top-right Sunshine Starburst Spark */}
+          <path
+            d="M1080 70 L1092 104 L1126 116 L1092 128 L1080 162 L1068 128 L1034 116 L1068 104 Z"
+            fill="#F8E84C"
+          />
+          {/* Bottom-right Periwinkle Disc */}
+          <circle cx="1095" cy="545" r="44" fill="#7886F8" />
+          <circle cx="1095" cy="545" r="20" fill="#F0EDFF" />
         </svg>
 
-        {/* Central Sculptural Core: The "Idea" Orb */}
-        <div className="relative z-10 flex flex-col items-center justify-center">
-          {/* Outer floating decorative rings */}
-          <div className="absolute w-72 h-72 rounded-full border border-[#7886F8]/30 animate-spin-slow pointer-events-none" />
-          <div className="absolute w-84 h-84 rounded-full border border-dashed border-[#FF4FA3]/25 pointer-events-none" />
-
-          {/* Central Sphere with multi-layer radial gradient */}
-          <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-gradient-to-tr from-[#35108F] via-[#5515E8] to-[#9965FF] shadow-[0_0_80px_rgba(85,21,232,0.7),inset_0_-15px_30px_rgba(0,0,0,0.6),inset_0_15px_25px_rgba(255,255,255,0.4)] flex items-center justify-center transition-transform duration-500 hover:scale-105 group cursor-pointer">
-            {/* Inner creative spark motif */}
-            <div className="relative text-center p-6 text-white">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md mb-2 shadow-inner border border-white/20">
-                <Sparkles className="w-6 h-6 text-[#F8E84C]" />
+        {/* Foreground Structured Composition: Idea Core + Floating Platform Cards */}
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          
+          {/* Left / Center Column (5 cols on desktop): The Sculptural "Idea Core" */}
+          <div className="lg:col-span-5 flex flex-col justify-between bg-[#35108F]/90 backdrop-blur-md rounded-2xl p-6 sm:p-7 border border-white/20 shadow-xl">
+            <div>
+              <div className="flex items-center justify-between gap-2 text-xs font-mono uppercase tracking-wider text-[#F8E84C]">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4" />
+                  Raw Campaign Spark
+                </span>
+                <span>01 / INPUT</span>
               </div>
-              <div className="text-xs font-semibold tracking-wider uppercase text-white/80">Input Idea</div>
-              <div className="text-sm sm:text-base font-bold text-white leading-tight mt-0.5">
-                "One spark → 5 platforms"
+
+              <div className="mt-4 p-4 rounded-xl bg-white text-[#19171F] shadow-md">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-[#5515E8]">
+                  Founder Note · 1 Sentence
+                </div>
+                <p className="mt-1.5 font-display text-base sm:text-lg font-bold leading-snug text-[#19171F]">
+                  “We built HyperSchema 1.0 to generate type-safe SQL migrations in 400ms without an ORM.”
+                </p>
+                <div className="mt-3 pt-2.5 border-t border-[#19171F]/10 flex flex-wrap items-center gap-2 text-xs text-[#777481]">
+                  <span>Audience: Engineers</span>
+                  <span aria-hidden="true">·</span>
+                  <span>Tone: Punchy</span>
+                  <span aria-hidden="true">·</span>
+                  <span>3 Channels</span>
+                </div>
               </div>
             </div>
 
-            {/* Glowing specular highlight on sphere */}
-            <div className="absolute top-4 left-6 w-16 h-10 bg-white/30 rounded-full blur-md transform -rotate-45 pointer-events-none" />
+            {/* Sculptural Transformation Connector */}
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-white/25" />
+              <div className="px-3.5 py-1.5 rounded-lg bg-[#F8E84C] text-[#19171F] text-xs font-extrabold tracking-tight flex items-center gap-1.5 shadow-sm">
+                <Layers className="w-3.5 h-3.5" />
+                <span>Open-Weight Synthesis</span>
+              </div>
+              <div className="h-px flex-1 bg-white/25" />
+            </div>
+
+            <div className="flex items-center justify-between text-xs text-white/85">
+              <span>SmolLM2 / WebGPU Ready</span>
+              {onOpenStudio && (
+                <button
+                  onClick={onOpenStudio}
+                  className="font-bold text-[#F8E84C] hover:underline flex items-center gap-1"
+                >
+                  <span>Try with your idea</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Core base shadow */}
-          <div className="w-48 h-6 bg-black/50 blur-lg rounded-full mt-6" />
+          {/* Right Column (7 cols on desktop): Floating Dimensional Social Post Cards */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            {HERO_SAMPLES.map((card, index) => {
+              const isSelected = selectedId === card.id;
+              const spanFullOnDesktop = index === 0 ? 'sm:col-span-2' : 'sm:col-span-1';
+
+              return (
+                <div
+                  key={card.id}
+                  onClick={() => setSelectedId(card.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedId(card.id);
+                    }
+                  }}
+                  className={`${spanFullOnDesktop} text-left bg-white text-[#19171F] rounded-2xl p-5 sm:p-6 transition-all cursor-pointer border-2 ${
+                    isSelected
+                      ? 'border-[#F8E84C] shadow-[0_18px_40px_rgba(25,23,31,0.28)] -translate-y-0.5'
+                      : 'border-transparent shadow-lg hover:-translate-y-0.5'
+                  } ${index === 1 ? 'animate-float' : index === 2 ? 'animate-float-delayed' : ''}`}
+                >
+                  {/* Top metadata line (Zero-pill discipline: clean inline text) */}
+                  <div className="flex items-center justify-between gap-2 text-xs text-[#777481] mb-2.5">
+                    <div className="font-bold text-[#19171F] flex items-center gap-2">
+                      <span
+                        className="inline-block w-2.5 h-2.5 rounded-sm"
+                        style={{ backgroundColor: card.accent }}
+                        aria-hidden="true"
+                      />
+                      <span>{card.platform}</span>
+                    </div>
+                    <div className="flex items-center gap-1 font-mono text-[11px] text-[#5515E8]">
+                      <Calendar className="w-3 h-3" />
+                      <span>{card.schedule}</span>
+                    </div>
+                  </div>
+
+                  {/* Draft Hook */}
+                  <p className="font-display text-sm sm:text-base font-bold text-[#19171F] leading-snug">
+                    “{card.hook}”
+                  </p>
+
+                  {/* Footer metadata */}
+                  <div className="mt-4 pt-3 border-t border-[#19171F]/10 flex items-center justify-between text-xs text-[#777481]">
+                    <span>{card.meta}</span>
+                    <span className="font-bold text-[#5515E8] flex items-center gap-1">
+                      {isSelected ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" />
+                          <span>Active</span>
+                        </>
+                      ) : (
+                        <span>Inspect</span>
+                      )}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
         </div>
 
-        {/* Floating Social Draft Card 1: X / Twitter (Top Left) */}
-        <div 
-          onClick={() => setActiveCard('x')}
-          className={`absolute top-8 left-4 sm:left-10 md:left-14 w-64 sm:w-72 bg-[#120D24]/90 backdrop-blur-xl border ${activeCard === 'x' ? 'border-[#5515E8] shadow-[0_0_30px_rgba(85,21,232,0.4)]' : 'border-white/10'} p-4 rounded-2xl text-white cursor-pointer transition-all duration-300 transform animate-float hover:scale-105 z-20`}
-        >
-          <div className="flex items-center justify-between text-xs text-white/60 mb-2">
-            <span className="font-semibold text-white flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#7886F8]" />
-              X Thread Hook
-            </span>
-            <span className="text-[11px] text-[#F8E84C] font-mono">240 chars</span>
+        {/* Bottom Workspace Status Strip inside the Hero Artwork */}
+        <div className="relative z-10 mt-6 pt-5 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-white/90">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-bold text-[#F8E84C]">Weekly Board Preview</span>
+            <span aria-hidden="true">·</span>
+            <span>Idea → Draft → Review → Ready</span>
+            <span aria-hidden="true">·</span>
+            <span>Export to CSV, JSON, or Plain Text</span>
           </div>
-          <p className="text-xs sm:text-sm text-white/90 font-medium leading-snug line-clamp-2">
-            "Most teams waste 8 hours a week reformatting the same message. Here is how we automated it."
-          </p>
-          <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-white/50">
-            <span className="flex items-center gap-1"><Heart className="w-3 h-3 text-[#FF4FA3]" /> 1.2k</span>
-            <span className="flex items-center gap-1"><Repeat className="w-3 h-3 text-[#7886F8]" /> 284</span>
-            <span className="text-[#F8E84C] flex items-center gap-0.5 font-medium">Ready <ArrowUpRight className="w-3 h-3" /></span>
-          </div>
+          {onOpenStudio && (
+            <button
+              onClick={onOpenStudio}
+              className="font-bold text-white bg-white/15 hover:bg-white/25 px-3.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
+            >
+              <span>Open in full workspace</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        {/* Floating Social Draft Card 2: LinkedIn Narrative (Top Right) */}
-        <div 
-          onClick={() => setActiveCard('linkedin')}
-          className={`absolute top-12 right-4 sm:right-10 md:right-12 w-64 sm:w-76 bg-[#120D24]/90 backdrop-blur-xl border ${activeCard === 'linkedin' ? 'border-[#7886F8] shadow-[0_0_30px_rgba(120,134,248,0.4)]' : 'border-white/10'} p-4 rounded-2xl text-white cursor-pointer transition-all duration-300 transform animate-float-delayed hover:scale-105 z-20`}
-        >
-          <div className="flex items-center justify-between text-xs text-white/60 mb-2">
-            <span className="font-semibold text-white flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#0077B5]" />
-              LinkedIn Narrative
-            </span>
-            <span className="text-[11px] text-white/50 font-mono">Structured</span>
-          </div>
-          <p className="text-xs sm:text-sm text-white/90 font-medium leading-snug line-clamp-3">
-            "We audited 40 creative founders this month. The ones shipping consistently have one system in common..."
-          </p>
-          <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-white/50">
-            <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3 text-[#7886F8]" /> 42 comments</span>
-            <span className="text-[#FF7A30] font-medium">In Review</span>
-          </div>
-        </div>
-
-        {/* Floating Social Draft Card 3: Instagram Carousel (Bottom Left/Center) */}
-        <div 
-          onClick={() => setActiveCard('ig')}
-          className={`absolute bottom-6 left-6 sm:left-16 md:left-24 w-60 sm:w-68 bg-[#120D24]/90 backdrop-blur-xl border ${activeCard === 'ig' ? 'border-[#FF4FA3] shadow-[0_0_30px_rgba(255,79,163,0.4)]' : 'border-white/10'} p-3.5 rounded-2xl text-white cursor-pointer transition-all duration-300 transform animate-float-slow hover:scale-105 z-20`}
-        >
-          <div className="flex items-center justify-between text-xs text-white/60 mb-1.5">
-            <span className="font-semibold text-white flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#FF4FA3]" />
-              IG Carousel
-            </span>
-            <span className="text-[11px] text-[#F8E84C] font-mono">5 Slides</span>
-          </div>
-          <p className="text-xs text-white/90 font-medium line-clamp-2">
-            Slide 1: Why 90% of creators burn out in month 3 (and the studio fix).
-          </p>
-        </div>
-
-        {/* Floating Playful Geometric Accents */}
-        {/* Tangerine Cube/Disc */}
-        <div className="absolute top-28 left-1/4 w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF7A30] to-[#E0530A] shadow-lg transform rotate-12 animate-float pointer-events-none" />
-        {/* Sunshine Yellow Diamond */}
-        <div className="absolute bottom-20 right-1/4 w-9 h-9 rounded-md bg-[#F8E84C] shadow-[0_0_20px_rgba(248,232,76,0.6)] transform rotate-45 animate-float-delayed pointer-events-none" />
-        {/* Hot Pink Sphere */}
-        <div className="absolute bottom-24 right-12 w-6 h-6 rounded-full bg-[#FF4FA3] shadow-[0_0_15px_rgba(255,79,163,0.7)] animate-float-slow pointer-events-none" />
-        {/* Periwinkle Pill */}
-        <div className="absolute top-16 right-1/3 w-10 h-4 rounded-full bg-[#7886F8]/60 blur-[1px] transform -rotate-12 pointer-events-none" />
-      </div>
-
-      {/* Natural visual invitation to scroll */}
-      <div className="flex items-center justify-center mt-3 text-xs text-[#777481] dark:text-[#9590A3]">
-        <span>Interactive preview · Click cards to highlight platform drafts</span>
       </div>
     </div>
   );

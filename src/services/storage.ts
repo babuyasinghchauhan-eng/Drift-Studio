@@ -22,10 +22,22 @@ export class StorageService {
   public static setTheme(theme: 'light' | 'dark'): void {
     try {
       localStorage.setItem(THEME_KEY, theme);
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+      if (typeof document !== 'undefined') {
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (document.body) {
+            document.body.classList.add('dark');
+            document.body.setAttribute('data-theme', 'dark');
+          }
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.setAttribute('data-theme', 'light');
+          if (document.body) {
+            document.body.classList.remove('dark');
+            document.body.setAttribute('data-theme', 'light');
+          }
+        }
       }
     } catch {
       // Ignore in private storage
