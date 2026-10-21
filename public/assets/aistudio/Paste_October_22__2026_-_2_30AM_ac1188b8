@@ -1,0 +1,816 @@
+# DRIFT STUDIO — THE MASTER BUILD PROMPT
+## Open-AI Social Content Studio | Hacktoberfest 2026 — Week 3: Slow and Steady
+
+You are an elite digital product studio operating as one team: an award-winning creative director, senior UI/UX designer, motion designer, frontend architect, AI engineer, and accessibility specialist.
+
+Your mission is to design and build **Drift Studio**, a visually extraordinary, fully functional social content creation workspace powered by open-weight AI.
+
+The visual reference is the video walkthrough supplied with this task. Study its aesthetic and interaction style carefully. Reproduce the same level of visual confidence, creative energy, editorial typography, vivid colors, graphic composition, and thoughtful scroll-based storytelling while creating an entirely original brand and interface.
+
+Reference design:
+https://dribbble.com/shots/26366091-Landing-page-design-for-a-social-media-management-platform
+
+This is a separate project for the Hacktoberfest Open-Source AI Challenge, Week 3: "Slow and Steady".
+
+It must NOT be a food application, meal planner, recipe generator, or recreation of SlothPlate. Give it an entirely different product purpose, information architecture, identity, and user journey.
+
+Do not just describe what you would build. Inspect the existing workspace, then implement the actual application, test it, and refine it.
+
+# 01. THE PRODUCT IDEA
+
+## Brand: Drift Studio
+
+Main tagline: "Your ideas. Already in motion."
+
+Alternative hero statement: "Less posting. More creating."
+
+Product description:
+
+Drift Studio transforms one rough idea into an organized collection of platform-specific social media drafts. It uses open-weight AI to handle the repetitive work of planning posts, adapting content, drafting captions, and organizing a weekly content calendar.
+
+The audience includes:
+- Indie hackers and developers.
+- Students building their personal brands.
+- Freelancers and creators.
+- Small businesses.
+- Community managers.
+- Anyone who wants to share their work without spending hours planning content.
+
+The central promise is simple:
+
+**Think of the idea once. Let Drift take care of the busywork.**
+
+The entire experience should revolve around a real workflow:
+
+1. The user enters a campaign idea.
+2. They select their audience, tone, objective, and platforms.
+3. An open-weight model generates relevant content variations.
+4. The user edits and organizes the drafts.
+5. The content moves into a weekly board or calendar.
+6. The user copies or exports the finished content.
+
+This is not another generic chatbot. It is a visual content studio with genuine AI functionality.
+
+Do not implement fake social-media publishing. Generated content must be editable and exportable, and scheduling must be presented as a local planning feature unless a real publishing integration exists.
+
+# 02. CREATIVE DIRECTION — MATCH THE ENERGY OF THE REFERENCE
+
+The supplied video demonstrates the following visual principles. Use them as the creative foundation:
+
+- A beautifully clean white background.
+- Centered, oversized editorial headlines.
+- Minimal, carefully arranged navigation.
+- Bold sections featuring saturated violet and playful abstract artwork.
+- Floating, dimensional, colorful graphic objects.
+- Large areas of whitespace between important sections.
+- Colorful dashboard visuals with charts, metrics, and small interface details.
+- Distinctive step-by-step feature cards.
+- Large numerical typography and visual storytelling.
+- Spacious testimonial and FAQ sections.
+- A dramatic periwinkle or violet final call to action.
+- Elegant transitions between white editorial sections and full-width visual moments.
+
+Do not duplicate the reference company's name, logo, exact artwork, copy, or proprietary interface. Do not reproduce its screenshots pixel-for-pixel.
+
+Create a design that could sit alongside the reference in a premium digital design showcase while being instantly recognizable as Drift.
+
+The result should look custom-designed, not like a stock SaaS template produced by an AI website builder.
+
+# 03. THE VISUAL SYSTEM
+
+## Primary color palette
+
+Build a bright, confident, playful color system.
+
+- Primary background: #FFFFFF
+- Main text: #19171F
+- Secondary text: #777481
+- Electric violet: #5515E8
+- Deep violet: #35108F
+- Hot pink: #FF4FA3
+- Tangerine: #FF7A30
+- Sunshine yellow: #F8E84C
+- Periwinkle blue: #7886F8
+- Pale lavender: #F0EDFF
+- Soft grey surface: #F7F6FA
+- Border: rgba(25, 23, 31, 0.10)
+
+Use color strategically.
+
+The white sections provide calm and clarity. The purple, pink, orange, yellow, and blue sections provide creative energy and make important moments memorable.
+
+Do not put every accent color on every component. Create a consistent visual hierarchy and meaningful color relationships.
+
+## Typography
+
+Use a deliberate editorial typographic system.
+
+- Display typography: a distinctive modern grotesk or editorial sans-serif with strong proportions.
+- Supporting typography: a clean, highly readable sans-serif.
+- Optional display-serif accents only where they genuinely improve the composition.
+- Metadata: subtle, compact typography with consistent spacing.
+
+Use fonts available through a reliable web font provider or bundled project assets, with sensible system fallbacks.
+
+Hero headings should be big, confident, and sometimes broken into deliberately composed lines. They should not look like generic centered marketing copy.
+
+Use responsive typography with clamp() and verify that headlines wrap beautifully across phone, tablet, and desktop screens.
+
+## Geometry and surfaces
+
+- Clean rectangular compositions.
+- Selectively rounded corners rather than excessive pill-shaped components.
+- Carefully aligned grids.
+- Fine borders.
+- Soft, realistic shadows.
+- Layered cards where they improve visual depth.
+- Floating labels and compact metadata.
+- Large artwork containers with distinctive silhouettes.
+- Consistent spacing and alignment.
+
+The entire interface must feel intentional down to the smallest details.
+
+# 04. HERO — MAKE THE FIRST SCREEN MEMORABLE
+
+The first viewport is the most important visual moment.
+
+Build a spacious, predominantly white hero with:
+- A small, refined top navigation.
+- A short eyebrow identifying the product category.
+- A large centered headline.
+- A concise supporting statement.
+- A clear primary CTA.
+- A quiet secondary action.
+- A spectacular product illustration occupying the lower part of the hero.
+
+Suggested copy:
+
+Eyebrow:
+"YOUR OPEN-AI CONTENT STUDIO"
+
+Headline:
+"Less posting.
+More creating."
+
+Supporting text:
+"One idea in. A week of content out. Let open AI handle the repetitive work while you focus on what matters."
+
+Primary CTA:
+"Create my first plan"
+
+Secondary CTA:
+"See how it works"
+
+Small supporting indicator:
+"Powered by open-weight AI"
+
+## Hero artwork
+
+Create a bespoke, playful, multidimensional artwork for Drift.
+
+Imagine a large electric-violet composition with:
+- A sculptural central object representing an idea becoming content.
+- Floating card-like objects inspired by social posts.
+- A stylized speech bubble or creative spark.
+- Small yellow, pink, and orange geometric accents.
+- Delicate orbital lines or curved paths.
+- Layered circles and dimensional shapes.
+- A subtle sense of movement and depth.
+
+The artwork should feel playful, tactile, high-end, and slightly surreal.
+
+Create the artwork using custom SVG illustrations, CSS shapes, gradients, or original locally generated assets. Do not rely on unrelated stock photos or random emoji.
+
+Some graphic elements can subtly float, rotate, or drift at different speeds. The overall composition must remain stable and intentional.
+
+Make the art partially extend below the hero viewport to create a natural visual invitation to scroll.
+
+Do not let decorative artwork cover the heading, interfere with buttons, or create horizontal overflow.
+
+# 05. SCROLL-LED VISUAL STORYTELLING
+
+The video is not just a static landing page. It feels like moving through a series of art-directed scenes.
+
+Implement this as the defining experience of Drift.
+
+## Scene A: Hero
+
+White canvas, oversized headline, compact navigation, and a large violet artwork with vibrant floating elements.
+
+## Scene B: Immersive transition
+
+As the user scrolls, reveal a generously sized violet or purple illustration panel.
+
+Introduce a playful abstract character or sculptural form that symbolizes creative work moving through a system.
+
+Use subtle animated line work, layered shapes, oversized graphic forms, and a clear headline.
+
+Example:
+"Your ideas don't need another meeting."
+
+Supporting message:
+"They need a little momentum."
+
+Keep the illustration original to Drift.
+
+## Scene C: The product in action
+
+Transition back to white.
+
+Present a content planning workspace with believable draft previews.
+
+Show an original idea being transformed into several platform-specific versions.
+
+Use realistic post cards, small status indicators, typography, and platform labels.
+
+This should be a genuinely useful illustration of the product's functionality, not a random floating UI collage.
+
+## Scene D: Intelligent content tools
+
+Introduce a feature section with colorful charts, small cards, and distinctive layouts.
+
+Demonstrate real capabilities:
+- Platform-specific rewriting.
+- Tone changes.
+- Alternate hooks.
+- Content calendar planning.
+
+When using decorative metrics, label them as illustrative examples rather than real user statistics. Prefer demonstrating actual saved project counts when displaying dashboard statistics.
+
+## Scene E: Integrations and exports
+
+Create a visually engaging section using original icons and custom graphic treatments.
+
+Focus on functions the application genuinely supports:
+- Copying content.
+- Downloading text.
+- Exporting CSV.
+- Exporting JSON.
+- Organizing campaign drafts.
+
+Only label a service as an integration if a real integration exists. Do not invent integrations with Instagram, LinkedIn, X, or third-party APIs.
+
+## Scene F: The workflow
+
+Create three highly visual steps:
+
+01 — Capture an idea.
+
+02 — Let open AI build the first draft.
+
+03 — Review, organize, and move on.
+
+Use oversized numbers, colorful cards, geometric artwork, and concise explanations.
+
+Make each step visually distinct instead of duplicating the same card three times.
+
+## Scene G: Open AI, open possibilities
+
+Use a bold typographic layout to explain why the open-weight model matters.
+
+Discuss model choice, local inference when supported, transparency about where processing happens, and the ability to experiment with model behavior.
+
+Use a live model-status component in the actual application.
+
+Do not claim an offline capability unless it has been implemented and verified.
+
+## Scene H: Testimonials or proof of workflow
+
+Prefer an interactive example demonstrating the before-and-after transformation of a real sample brief.
+
+Do not invent user testimonials, customer names, adoption figures, or quantified productivity claims.
+
+If the product has no real testimonials, use an "Inside a campaign" showcase instead.
+
+## Scene I: FAQ
+
+Create a clean, generously spaced FAQ section with accessible expandable questions.
+
+Suggested topics:
+- Which AI model powers Drift?
+- Does my content leave my device?
+- Can I change the model?
+- Can I edit generated content?
+- Does Drift publish automatically?
+- What happens if AI is unavailable?
+
+Every answer must accurately reflect the implemented architecture.
+
+## Scene J: Final CTA
+
+Create a bold, full-width periwinkle or vivid-violet section with original dimensional artwork.
+
+Headline:
+"Give your next idea a head start."
+
+Supporting text:
+"Spend less time preparing to create. Get back to creating."
+
+CTA:
+"Start creating"
+
+The button must open the actual workspace.
+
+Finish with a well-designed footer, brand mark, useful links, and an honest explanation of the open-AI approach.
+
+# 06. BACKGROUND MOTION AND GRAPHIC ART DIRECTION
+
+Build the background and artwork as a coherent design system.
+
+Avoid generic animated blobs on every section.
+
+Use a combination of:
+- Saturated gradient fields.
+- Abstract SVG silhouettes.
+- Layered geometric shapes.
+- Fine curved lines.
+- Subtle grain where performant.
+- Soft color transitions.
+- Selective 3D-style composition.
+- Tiny animated accent elements.
+
+Motion should evoke ideas drifting, content assembling, and creative momentum.
+
+The hero artwork may use a few separate animation layers with slightly different durations.
+
+Some shapes can slowly float. A line may trace a path. A graphic object may gently rotate a few degrees. Cards may enter their composition with a restrained stagger.
+
+Every effect should have a clear visual purpose.
+
+## Motion engineering
+
+- Prefer CSS transforms and opacity for animation.
+- Avoid animating layout-heavy properties.
+- Do not use a large continuously running canvas when SVG or CSS will suffice.
+- Avoid continuously updating React state for background movement.
+- Avoid scroll listeners that perform expensive work on every event.
+- Use IntersectionObserver for appropriate section reveals.
+- Use scroll-linked animations only when supported and genuinely beneficial.
+- Provide a reduced-motion experience.
+- Pause nonessential animation when the document is hidden where practical.
+- Avoid sudden changes in artwork dimensions.
+- Make decorative elements ignore pointer input.
+- Keep content readable even while graphics move.
+
+Use a restrained range of animation durations. Micro-interactions should feel crisp; larger visual transitions can be slightly slower.
+
+Do not force users to scroll through a predetermined animation. Their scroll position must always remain under their control.
+
+# 07. THE ACTUAL WORKING PRODUCT
+
+The landing page is the entrance. The content studio is the product.
+
+Create a coherent, responsive application experience.
+
+## A. Dashboard
+
+Provide:
+- A clear greeting.
+- A prominent "New content plan" action.
+- Recent campaigns.
+- Actual saved draft counts.
+- Drafts awaiting review.
+- Upcoming locally scheduled content.
+- A preview of the content board.
+- Useful first-time empty states.
+
+Use real local application data rather than fake statistics.
+
+## B. Campaign creation
+
+Create a polished, easy-to-complete campaign form.
+
+Fields:
+- Campaign name.
+- Initial idea or brief.
+- Target audience.
+- Content objective.
+- Preferred tone.
+- Language.
+- Target platforms.
+- Number of requested drafts.
+- Optional keywords.
+- Optional call to action.
+- Optional writing constraints.
+
+Include well-considered defaults.
+
+The user must be able to complete the basic workflow without filling out every optional field.
+
+Provide validation, accessible labels, inline errors, and loading states.
+
+Preserve all entered information when returning to a previous step or recovering from an inference error.
+
+## C. Open-weight AI content generation
+
+Open-weight inference is the primary intelligence behind the product.
+
+The model should transform the user's campaign brief into structured, relevant, platform-specific drafts.
+
+Each draft may contain:
+- Platform.
+- Suggested hook or title.
+- Main text.
+- Suggested hashtags, when relevant.
+- Call to action, when appropriate.
+- A short explanation of the content angle, where useful.
+
+Include actions for:
+- Generate drafts.
+- Regenerate a single draft.
+- Generate alternative hooks.
+- Make the text shorter.
+- Change the tone.
+- Repurpose to another platform.
+- Edit inline.
+- Save.
+- Copy.
+- Export.
+
+All generated drafts must be editable.
+
+Validate structured model output before rendering it. Handle malformed output, incomplete responses, model-loading failures, inference timeouts, and unsupported device capabilities without losing existing work.
+
+Never render untrusted model output as executable HTML.
+
+## D. Model architecture
+
+Investigate browser-compatible open-weight models before choosing one.
+
+Preferred architecture:
+- React and TypeScript frontend.
+- A model adapter separating inference from the UI.
+- Hugging Face Transformers.js with WebGPU when supported by the selected model.
+- A compatible quantized checkpoint where practical.
+- An appropriate fallback, such as CPU inference or a separately configured local inference server.
+
+Choose a model whose format, architecture, license, and inference requirements have been verified.
+
+Do not simply select a popular model name without checking whether it is compatible with the chosen runtime.
+
+Keep prompt construction, model initialization, inference, response parsing, and application state in separate modules.
+
+Load the model lazily. Do not prevent users from exploring the landing page or workspace while it initializes.
+
+Display the actual model name and inference mode.
+
+Clearly distinguish:
+- Loading model.
+- Model ready.
+- Generating.
+- Local inference unavailable.
+- Demo mode.
+- Generation failed.
+
+If using local browser inference, disclose that initial model downloads may require internet access. Offline operation should only be claimed when the required model assets and application resources are available locally.
+
+If a remote endpoint is used, disclose that the submitted content is sent to that endpoint.
+
+Never hardcode private API credentials into frontend code.
+
+Primary reference:
+https://huggingface.co/docs/transformers.js/en/guides/webgpu
+
+## E. Working demo mode
+
+The deployed application must remain explorable even if a visitor's browser cannot load the AI model.
+
+Implement a clearly labelled demo mode using predetermined sample campaigns and example drafts.
+
+In demo mode:
+- Users can explore the interface.
+- Users can edit example drafts.
+- Users can move content across board columns.
+- Users can explore the calendar.
+- Users can save sample work.
+- Users can export the content.
+
+Never represent predetermined example outputs as freshly generated by AI.
+
+The core application should still be useful when inference is unavailable.
+
+## F. Content board
+
+Build a functional board with these stages:
+
+Idea → Draft → Review → Ready
+
+Allow users to:
+- Create content.
+- Open drafts.
+- Edit text.
+- Change platform.
+- Change status.
+- Duplicate drafts.
+- Delete drafts with confirmation or undo.
+- Search and filter.
+- Copy content.
+- Move drafts between columns.
+
+If drag-and-drop is implemented, provide an accessible alternative such as a status selector or move menu.
+
+All board changes must update application state and persist.
+
+## G. Calendar
+
+Build a usable weekly calendar.
+
+Include:
+- Previous week.
+- Next week.
+- Today.
+- Clear date labels.
+- Draft cards.
+- Status markers.
+- A rescheduling control.
+- Empty dates and empty-state handling.
+
+Represent locally planned publishing dates, not a real social-platform publishing schedule.
+
+Ensure ordinary touch scrolling cannot accidentally reschedule a post.
+
+Persist scheduling changes.
+
+## H. Storage and export
+
+Implement local persistence for:
+- Campaigns.
+- Drafts.
+- Content statuses.
+- Planned dates.
+- Theme preferences.
+- User preferences.
+
+Handle storage errors and corrupted data gracefully.
+
+Provide CSV, JSON, and plain-text export.
+
+Copy and export actions must display truthful success or error feedback.
+
+Do not require an account or cloud backend for the basic experience.
+
+# 08. FUNCTIONAL NAVIGATION AND INTERACTIONS
+
+Every visible interactive element must actually work.
+
+Implement:
+- Landing-page navigation links.
+- Workspace navigation.
+- Theme toggle.
+- Mobile menu.
+- FAQ accordions.
+- Campaign forms.
+- Draft editor.
+- Dropdowns.
+- Dialogs.
+- Board interactions.
+- Calendar controls.
+- Search and filters.
+- Copy and export actions.
+- Model-status display.
+- Empty states.
+- Loading states.
+- Error handling.
+
+Use real handlers and state transitions. Do not leave empty onClick callbacks or decorative controls pretending to work.
+
+Add accessible focus, hover, active, pressed, loading, disabled, success, and error states.
+
+Use toast notifications sparingly and never to disguise a failed operation.
+
+All modals and menus must work with a keyboard. Escape should close an appropriate dialog, and focus must behave predictably.
+
+# 09. RESPONSIVE QUALITY
+
+The website must be fully responsive, not just technically narrow.
+
+Test at:
+- 320 px.
+- 375 px.
+- 430 px.
+- 768 px.
+- 1024 px.
+- 1440 px and wider.
+
+On small screens:
+- Stack hero content naturally.
+- Scale abstract artwork to fit without clipping important elements.
+- Avoid horizontal scrolling.
+- Use compact navigation.
+- Keep form controls touch-friendly.
+- Adapt the content board and calendar.
+- Avoid fixed-width desktop layouts.
+- Make dialogs fit the available viewport.
+- Preserve readable type sizes.
+- Ensure no interaction depends exclusively on hover.
+
+Use roughly 44 × 44 CSS-pixel touch targets for primary controls wherever practical.
+
+# 10. SCROLLING — THE NON-NEGOTIABLE STANDARD
+
+Users must be able to scroll smoothly from top to bottom and back to the top without layout jumps, lag, trapped scrolling, disappearing content, or broken interactions.
+
+Implement the following:
+
+- Preserve native browser scroll behavior.
+- Do not hijack wheel or touch events for decorative motion.
+- Do not globally disable touch gestures.
+- Avoid scroll-jacking libraries.
+- Do not use unnecessary full-page snap behavior.
+- Ensure fixed and sticky headers never hide section headings.
+- Keep decorative motion independent of document scrolling.
+- Do not force a scroll position after a section animation.
+- Avoid layout shifts from loading fonts, images, illustrations, and model-related interface elements.
+- Ensure all section transitions work in both directions.
+- Keep nested scroll containers limited to places that genuinely need them.
+- Avoid adding high-cost blur effects to enormous moving layers.
+- Ensure dialogs and mobile menus scroll correctly when their content exceeds the viewport.
+- Avoid horizontal overflow across all breakpoints.
+
+Use stable dimensions and aspect ratios for visual assets.
+
+If IntersectionObserver reveals content, ensure content remains discoverable and accessible when JavaScript animation is unavailable. Do not make important content permanently invisible because an observer failed.
+
+Any motion that creates visible jitter, delays interaction, or causes frame drops must be simplified.
+
+# 11. PREMIUM MICRO-INTERACTIONS
+
+Every interaction should feel deliberate.
+
+Buttons should have a restrained change in color or depth when pressed.
+
+Cards may lift slightly on desktop hover without moving the underlying layout.
+
+Tabs should transition cleanly between states.
+
+Dropdowns should appear quickly and close predictably.
+
+Section reveals may use gentle opacity and transform transitions.
+
+The hero artwork should create a feeling of life, not chaos.
+
+Use animation to improve comprehension and perceived quality, never to distract from task completion.
+
+Support prefers-reduced-motion throughout the app.
+
+# 12. DARK MODE
+
+Implement a genuine dark appearance rather than simply inverting all colors.
+
+Use:
+- Deep charcoal surfaces.
+- Readable light text.
+- Muted secondary text.
+- Violet and pink accent colors with sufficient contrast.
+- Carefully designed borders and input states.
+
+Ensure charts, artwork panels, navigation, dialogs, and menus remain visually coherent.
+
+Persist the preference and prevent an avoidable theme flash during initialization.
+
+# 13. TECHNICAL IMPLEMENTATION
+
+First inspect the project, its existing dependencies, routes, components, scripts, and assets.
+
+Reuse working infrastructure where appropriate, but establish a separate, original product experience.
+
+Preferred stack:
+- React.
+- TypeScript.
+- Vite if appropriate for the existing project.
+- Tailwind CSS or a consistent custom CSS system.
+- Lucide icons.
+- A verified open-weight inference stack.
+- Browser storage for local projects.
+
+Use reusable components and a clean folder structure.
+
+Keep design tokens centralized. Maintain consistent spacing, typography, color variables, border radii, and motion durations.
+
+Avoid enormous components, unnecessary dependencies, duplicated code, and excessive abstraction.
+
+Do not rewrite the entire project blindly. Inspect it first and make deliberate changes.
+
+Do not depend on SlothPlate's codebase, interface, backend, or project data.
+
+# 14. PERFORMANCE
+
+Prioritize perceived speed and responsiveness.
+
+- Keep the landing page usable while AI dependencies load.
+- Lazy-load large inference assets.
+- Avoid duplicate model initialization.
+- Avoid repeated expensive re-renders.
+- Debounce search when appropriate.
+- Avoid continuously updating React state for background animations.
+- Prefer transforms and opacity for animation.
+- Keep artwork assets appropriately sized.
+- Clean up event listeners.
+- Handle asynchronous operations without updating abandoned components.
+- Preserve user data when inference fails.
+- Avoid unnecessary large libraries and oversized assets.
+
+Do not claim that the app is perfectly smooth based on appearance alone. Test it and remove the sources of actual jank.
+
+# 15. DESIGN QUALITY BAR
+
+The following are unacceptable:
+- Generic AI website-builder layouts.
+- A plain white page with a few cards.
+- An unstyled dashboard after a polished landing page.
+- Massive empty spaces without visual intention.
+- Repeated identical feature sections.
+- Random blobs with no relationship to the product.
+- Fake metrics and invented testimonials.
+- Broken routes.
+- Nonfunctional controls.
+- Overflowing mobile screens.
+- Jittery scroll animations.
+- Loading the AI model before the page can render.
+- Fake AI output presented as live inference.
+- Fake claims about privacy, offline operation, or publishing.
+- A static screenshot presented as an application.
+
+The final product must feel as though a skilled design team shaped every important visual decision.
+
+# 16. TESTING CHECKLIST
+
+Before declaring completion, perform the following checks.
+
+Visual:
+- Hero typography and illustration are composed correctly.
+- The visual identity remains consistent from top to bottom.
+- Purple, pink, orange, yellow, and blue are balanced.
+- Motion looks intentional rather than distracting.
+- All artwork scales properly.
+- Every section has a clear visual purpose.
+
+Functional:
+- All routes and navigation links work.
+- The main CTA opens the real workspace.
+- Campaign creation works.
+- AI inference runs through the configured open-weight model when available.
+- Model failures are handled honestly.
+- Demo mode is visibly labelled.
+- Drafts can be edited, saved, copied, regenerated, moved, and deleted.
+- Filters and search work.
+- Calendar navigation and rescheduling work.
+- Theme selection persists.
+- Exports work.
+- Data remains available after refresh.
+
+Interaction:
+- Scroll down and back up through the complete page.
+- Check for layout jumps, hidden sections, stuck animations, and horizontal overflow.
+- Test keyboard navigation.
+- Test touch interactions at mobile sizes.
+- Confirm all dialog and menu behavior.
+- Test reduced motion.
+- Ensure ordinary scrolling does not trigger unintended actions.
+
+Engineering:
+- Run the available production build.
+- Run lint, type checks, and tests when configured.
+- Fix errors that are encountered.
+- Check the browser console.
+- Verify model loading and error states.
+- Verify that no secrets are exposed.
+- Report any verification step that could not actually be completed.
+
+Do not invent test results or claim functionality that has not been implemented.
+
+# 17. IMPLEMENTATION ORDER
+
+Phase 1: Inspect the existing workspace and establish the brand, design tokens, typography, and original artwork direction.
+
+Phase 2: Build the full, art-directed landing page with every visual section and smooth, accessible scroll behavior.
+
+Phase 3: Implement the workspace shell, responsive navigation, dashboard, campaign form, draft editor, board, and calendar.
+
+Phase 4: Integrate the open-weight inference adapter, validate its output, and implement honest model status plus a fully usable demo mode.
+
+Phase 5: Implement persistence, search, filters, theme, copying, and exports.
+
+Phase 6: Refine every interaction, responsive layout, background effect, and section transition.
+
+Phase 7: Run the available tests, resolve regressions, and verify the finished experience.
+
+Do not stop after creating the hero. Do not return a plan instead of implementing the project. Continue through the complete product and report genuine limitations.
+
+# FINAL CREATIVE DIRECTION
+
+Make Drift Studio feel like a playful, high-end creative platform with the visual storytelling of the supplied video and the usefulness of a real social content workspace.
+
+The homepage must catch someone's attention in the first few seconds.
+
+The full scroll experience must reward exploration.
+
+The dashboard must be clear and genuinely usable.
+
+The open-weight AI must make the core workflow possible.
+
+The app must remain responsive, accessible, and stable on desktop and mobile.
+
+The result should be visually distinctive enough for a design showcase and technically credible enough for a Hacktoberfest project submission.
+
+**Build the real thing. Make it beautiful. Make it work.**

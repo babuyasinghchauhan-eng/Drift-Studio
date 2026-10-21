@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    /* Drift Studio Design Tokens */
+    --color-bg: #FFFFFF;
+    --color-text-main: #19171F;
+    --color-text-muted: #777481;
+    --color-electric-violet: #5515E8;
+    --color-deep-violet: #35108F;
+    --color-hot-pink: #FF4FA3;
+    --color-tangerine: #FF7A30;
+    --color-sunshine-yellow: #F8E84C;
+    --color-periwinkle: #7886F8;
+    --color-lavender: #F0EDFF;
+    --color-surface-soft: #F7F6FA;
+    --color-border: rgba(25, 23, 31, 0.08);
+  }
+
+  .dark {
+    --color-bg: #0C0B12;
+    --color-text-main: #F6F5FA;
+    --color-text-muted: #9590A3;
+    --color-surface-soft: #14121F;
+    --color-border: rgba(255, 255, 255, 0.10);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-1deg);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes drift-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-float {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-reverse 7s ease-in-out infinite 1.5s;
+}
+
+.animate-float-slow {
+  animation: float-gentle 9s ease-in-out infinite 0.5s;
+}
+
+.animate-spin-slow {
+  animation: drift-spin 30s linear infinite;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 134, 248, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 21, 232, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
